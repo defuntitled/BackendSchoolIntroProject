@@ -32,14 +32,14 @@ IMPORT_BATCHES = [
             },
             {
                 "type": "FILE",
-                "url": "jPhone 13",
+                "url": "/file/url1",
                 "id": "863e1a7a-1304-42ae-943b-179184c077e3",
                 "parentId": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
                 "size": 128
             },
             {
                 "type": "FILE",
-                "url": "Xomiа Readme 10",
+                "url": "/file/url2",
                 "id": "b1d8fd7d-2ae3-47d5-b2f9-0f094af800d4",
                 "parentId": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
                 "size": 256
@@ -56,14 +56,14 @@ IMPORT_BATCHES = [
             },
             {
                 "type": "FILE",
-                "url": "Samson 70\" LED UHD Smart",
+                "url": "/file/url3",
                 "id": "98883e8f-0507-482f-bce2-2fb306cf6483",
                 "parentId": "1cc0129a-2bfe-474c-9ee6-d435bf5fc8f2",
                 "size": 512
             },
             {
                 "type": "FILE",
-                "url": "Phyllis 50\" LED UHD Smarter",
+                "url": "/file/url4",
                 "id": "74b81fda-9cdc-4b63-8927-c978afed5cf4",
                 "parentId": "1cc0129a-2bfe-474c-9ee6-d435bf5fc8f2",
                 "size": 1024
@@ -75,7 +75,7 @@ IMPORT_BATCHES = [
         "items": [
             {
                 "type": "FILE",
-                "url": "Goldstar 65\" LED UHD LOL Very Smart",
+                "url": "/file/url5",
                 "id": "73bc3b36-02d1-4245-ab35-3106c9ee1c65",
                 "parentId": "1cc0129a-2bfe-474c-9ee6-d435bf5fc8f2",
                 "size": 64
@@ -103,7 +103,7 @@ EXPECTED_TREE = {
             "children": [
                 {
                     "type": "FILE",
-                    "url": "Samson 70\" LED UHD Smart",
+                    "url": "/file/url3",
                     "id": "98883e8f-0507-482f-bce2-2fb306cf6483",
                     "parentId": "1cc0129a-2bfe-474c-9ee6-d435bf5fc8f2",
                     "size": 512,
@@ -112,7 +112,7 @@ EXPECTED_TREE = {
                 },
                 {
                     "type": "FILE",
-                    "url": "Phyllis 50\" LED UHD Smarter",
+                    "url": "/file/url4",
                     "id": "74b81fda-9cdc-4b63-8927-c978afed5cf4",
                     "parentId": "1cc0129a-2bfe-474c-9ee6-d435bf5fc8f2",
                     "size": 1024,
@@ -121,7 +121,7 @@ EXPECTED_TREE = {
                 },
                 {
                     "type": "FILE",
-                    "url": "Goldstar 65\" LED UHD LOL Very Smart",
+                    "url": "/file/url5",
                     "id": "73bc3b36-02d1-4245-ab35-3106c9ee1c65",
                     "parentId": "1cc0129a-2bfe-474c-9ee6-d435bf5fc8f2",
                     "size": 64,
@@ -140,7 +140,7 @@ EXPECTED_TREE = {
             "children": [
                 {
                     "type": "FILE",
-                    "url": "jPhone 13",
+                    "url": "/file/url1",
                     "id": "863e1a7a-1304-42ae-943b-179184c077e3",
                     "parentId": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
                     "size": 128,
@@ -149,7 +149,7 @@ EXPECTED_TREE = {
                 },
                 {
                     "type": "FILE",
-                    "url": "Xomiа Readme 10",
+                    "url": "/file/url2",
                     "id": "b1d8fd7d-2ae3-47d5-b2f9-0f094af800d4",
                     "parentId": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
                     "size": 256,
@@ -243,21 +243,22 @@ def test_updates():
     print("Test updates passed.")
 
 
-def test_stats():
+def test_history():
     params = urllib.parse.urlencode({
         "dateStart": "2022-02-01T00:00:00Z",
         "dateEnd": "2022-02-03T00:00:00Z"
     })
     status, response = request(
         f"/node/{ROOT_ID}/history?{params}", json_response=True)
-
     assert status == 200, f"Expected HTTP status code 200, got {status}"
     print("Test stats passed.")
 
 
 def test_delete():
-    date = urllib.parse.quote("2022-02-04T00:00:00Z")
-    status, _ = request(f"/delete/{ROOT_ID}?date={date}", method="DELETE")
+    params = urllib.parse.urlencode({
+        "date": "2022-02-04T00:00:00Z"
+    })
+    status, _ = request(f"/delete/{ROOT_ID}?{params}", method="DELETE")
     assert status == 200, f"Expected HTTP status code 200, got {status}"
 
     status, _ = request(f"/nodes/{ROOT_ID}", json_response=True)
@@ -270,7 +271,7 @@ def test_all():
     test_import()
     test_nodes()
     test_updates()
-    test_stats()
+    test_history()
     test_delete()
 
 
@@ -286,6 +287,8 @@ def main():
 
     if API_BASEURL.endswith('/'):
         API_BASEURL = API_BASEURL[:-1]
+
+    print(f"Testing API on {API_BASEURL}")
 
     if test_name is None:
         test_all()
