@@ -1,5 +1,5 @@
-from db.db_session import create_session
-from item_finder import find_item_by_id, find_children
+from service.db.db_session import create_session
+from service.app.item_finder import find_item_by_id, find_children
 
 
 def delete_item(item):
