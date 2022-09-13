@@ -1,8 +1,9 @@
-from flask import Flask, request,make_response
+from flask import Flask, request, make_response
 from service.db.db_session import global_init
 from service.app.item_finder import get_item_by_id
 from service.app.item_adder import import_items
 from service.app.item_deletter import delete_item_by_id
+import os
 
 app = Flask(__name__)
 
@@ -45,4 +46,5 @@ def delete_node(id):
 
 if __name__ == '__main__':
     global_init("db/nodes.sqlite")
-    app.run(port=8080,debug=True)
+    port = int(os.environ.get("PORT", 80))
+    app.run(host='0.0.0.0', port=port, debug=True)
