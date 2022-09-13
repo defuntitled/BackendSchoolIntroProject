@@ -1,4 +1,5 @@
 from service.db.db_session import create_session
+from service.db.item import Item
 from service.app.item_finder import find_item_by_id, find_children
 
 
@@ -8,7 +9,8 @@ def delete_item(item):
         for child in children:
             delete_item(child)
     session = create_session()
-    session.delete(item)
+    deleted_item = session.query(Item).filter(Item.id == item.id).first()
+    session.delete(deleted_item)
     session.commit()
 
 

@@ -1,6 +1,7 @@
 from service.db.item import TypeEnum
 from datetime import datetime
 from json import loads
+import queue
 from service.db.db_session import create_session
 from service.db.item import Item
 
@@ -12,6 +13,22 @@ def deserialize_item(item: dict) -> Item:
                 size=int(item["size"]) if item["type"] == "FILE" else None,
                 parentId=item["parentId"] if "parentId" in item.keys() and item["parentId"] != "null" else None
                 )
+
+
+def update_items(cur_id, update_date):
+    q = queue.Queue()
+    q.put(cur_id)
+    used = set()
+    session = create_session()
+    while not q.empty():
+        id = q.get()
+        used.add(id)
+        updated_item = session.query(Item).filter(Item.id == id).first()
+        updated_item.date = update_date
+        session.commit()
+        if not updated_item.parentId is None and updated_item.parentId not in used:
+            q.put(updated_item.parentId)
+            used.add(updated_item.parentId)
 
 
 def datetime_valid(dt_str):
@@ -69,10 +86,11 @@ def import_items(content: dict):
             old_item.size = item.size
             old_item.type = item.type
             old_item.parentId = item.parentId
-            old_item.date = content["updateDate"]
+            update_items(old_item.id, content["updateDate"])
             session.commit()
         if not old_items.first():
             item.date = content["updateDate"]
             session.add(item)
             session.commit()
+            update_items(item.id, content["updateDate"])
     return True
