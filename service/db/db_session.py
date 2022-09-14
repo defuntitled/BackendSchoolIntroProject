@@ -15,7 +15,7 @@ def global_init(db_file: str):
     if not db_file or not db_file.strip():
         raise Exception("Database name could be not empty")
     connect_str = f'sqlite:///{db_file.strip()}?check_same_thread=False'
-    # add logging
+    print(f"connect to database by url:{connect_str}")
     engine = sa.create_engine(connect_str, echo=False)
     _factory = orm.sessionmaker(bind=engine)
 
