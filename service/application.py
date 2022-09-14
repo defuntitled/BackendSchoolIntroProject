@@ -45,6 +45,5 @@ def delete_node(id):
 
 
 if __name__ == '__main__':
-    global_init("db/nodes.sqlite")
-    port = int(os.environ.get("PORT", 80))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    global_init("db\\nodes.sqlite3")
+    app.run()
