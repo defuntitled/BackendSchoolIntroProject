@@ -33,6 +33,8 @@ def serialize_file(item):
 def calculate_size(item):
     children = find_children(item.id)
     ans = 0
+    if children is None:
+        return 0
     for child in children:
         if child.type == TypeEnum.FILE:
             ans += child.size
