@@ -4,9 +4,11 @@ from service.app.item_finder import get_item_by_id
 from service.app.item_adder import import_items
 from service.app.item_deletter import delete_item_by_id
 import sys
+
 sys.path.append('path')
 
 app = Flask(__name__)
+database_loaded = False
 
 
 def bad_answer(code: int, message: str):
@@ -18,6 +20,8 @@ def bad_answer(code: int, message: str):
 
 @app.route('/nodes/<string:id>', methods=["GET"])
 def get_node(id: str):
+    if not database_loaded:
+        global_init("db\\nodes.sqlite3")
     res = get_item_by_id(id)
     if not res:
         return bad_answer(404, "Item not found")
@@ -27,6 +31,8 @@ def get_node(id: str):
 
 @app.route('/imports', methods=["POST"])
 def import_nodes():
+    if not database_loaded:
+        global_init("db\\nodes.sqlite3")
     if not request.json:
         return bad_answer(400, "Validation Failed")
     content = request.json
@@ -39,6 +45,8 @@ def import_nodes():
 
 @app.route("/delete/<string:id>", methods=["DELETE"])
 def delete_node(id):
+    if not database_loaded:
+        global_init("db\\nodes.sqlite3")
     res = delete_item_by_id(id)
     if not res:
         return bad_answer(404, "Item not found")
@@ -46,5 +54,6 @@ def delete_node(id):
 
 
 if __name__ == '__main__':
-    global_init("db\\nodes.sqlite3")
+    if not database_loaded:
+        global_init("db\\nodes.sqlite3")
     app.run()
