@@ -3,7 +3,8 @@ from service.db.db_session import global_init
 from service.app.item_finder import get_item_by_id
 from service.app.item_adder import import_items
 from service.app.item_deletter import delete_item_by_id
-import os
+import sys
+sys.path.append('path')
 
 app = Flask(__name__)
 
