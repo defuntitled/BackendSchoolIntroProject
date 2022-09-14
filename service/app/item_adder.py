@@ -24,8 +24,9 @@ def update_items(cur_id, update_date):
         id = q.get()
         used.add(id)
         updated_item = session.query(Item).filter(Item.id == id).first()
-        updated_item.date = update_date
-        session.commit()
+        if not updated_item is None:
+            updated_item.date = update_date
+            session.commit()
         if not updated_item.parentId is None and updated_item.parentId not in used:
             q.put(updated_item.parentId)
             used.add(updated_item.parentId)
