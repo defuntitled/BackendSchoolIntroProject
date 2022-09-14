@@ -8,4 +8,4 @@ RUN pip3 install -r requirements.txt
 COPY . .
 WORKDIR /service
 ENV PYTHONPATH /
-CMD ["gunicorn","--bind","0.0.0.0:80", "application:app"]
+CMD ["gunicorn","--workers=5","--bind","0.0.0.0:80", "application:app"]

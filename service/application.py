@@ -20,8 +20,10 @@ def bad_answer(code: int, message: str):
 
 @app.route('/nodes/<string:id>', methods=["GET"])
 def get_node(id: str):
+    global database_loaded
     if not database_loaded:
         global_init("db\\nodes.sqlite3")
+        database_loaded = True
     res = get_item_by_id(id)
     if not res:
         return bad_answer(404, "Item not found")
@@ -31,8 +33,10 @@ def get_node(id: str):
 
 @app.route('/imports', methods=["POST"])
 def import_nodes():
+    global database_loaded
     if not database_loaded:
         global_init("db\\nodes.sqlite3")
+        database_loaded = True
     if not request.json:
         return bad_answer(400, "Validation Failed")
     content = request.json
@@ -45,8 +49,10 @@ def import_nodes():
 
 @app.route("/delete/<string:id>", methods=["DELETE"])
 def delete_node(id):
+    global database_loaded
     if not database_loaded:
         global_init("db\\nodes.sqlite3")
+        database_loaded = True
     res = delete_item_by_id(id)
     if not res:
         return bad_answer(404, "Item not found")
@@ -56,4 +62,5 @@ def delete_node(id):
 if __name__ == '__main__':
     if not database_loaded:
         global_init("db\\nodes.sqlite3")
+        database_loaded = True
     app.run()
