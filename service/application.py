@@ -75,6 +75,11 @@ def not_found(error):
     return bad_answer(404, "Item not found")
 
 
+@app.errorhandler(500)
+def bad_situation(error):
+    return bad_answer(400, "Validation Failed")
+
+
 if __name__ == '__main__':
     if not database_loaded:
         global_init("db\\nodes.sqlite3")

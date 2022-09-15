@@ -44,6 +44,7 @@ def calculate_size(item):
 
 
 def serialize_folder(item):
+    children = find_children(item.id)
     return {
         "id": item.id,
         "url": item.url,
@@ -52,7 +53,7 @@ def serialize_folder(item):
         "date": item.date,
         "size": calculate_size(item),
         "children": [serialize_file(child) if child.type == TypeEnum.FILE else serialize_folder(child) for child in
-                     find_children(item.id)]
+                     children] if children is not None else []
     }
 
 
