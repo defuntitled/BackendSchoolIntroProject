@@ -66,12 +66,12 @@ def delete_node(id):
 
 
 @app.errorhandler(400)
-def invalid_data():
+def invalid_data(error):
     return bad_answer(400, "Validation Failed")
 
 
 @app.errorhandler(404)
-def not_found():
+def not_found(error):
     return bad_answer(404, "Item not found")
 
 
