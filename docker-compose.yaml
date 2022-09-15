@@ -1,0 +1,13 @@
+version: '3'
+services:
+  flask:
+    build: .
+    container_name: shbr
+    environment:
+      - PYTHONUNBUFFERED=True
+    restart: always
+    volumes:
+      - ./service:/service
+    ports:
+      - "80:80"
+    command: gunicorn --workers=30 --bind 0.0.0.0:80 application:app
