@@ -1,3 +1,5 @@
+import json
+
 import flask
 from flask import Flask, request, make_response
 from service.db.db_session import global_init
@@ -39,7 +41,7 @@ def import_nodes():
         global_init("db\\nodes.sqlite3")
         database_loaded = True
     try:
-        content = request.json
+        content = json.loads(request.get_data(as_text=True))
         if not content:
             flask.abort(400)
     except TypeError:
@@ -64,12 +66,12 @@ def delete_node(id):
 
 
 @app.errorhandler(400)
-def ret_val_err():
+def invalid_data():
     return bad_answer(400, "Validation Failed")
 
 
 @app.errorhandler(404)
-def ret_val_err():
+def not_found():
     return bad_answer(404, "Item not found")
 
 
