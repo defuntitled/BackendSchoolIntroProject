@@ -38,11 +38,11 @@ def import_nodes():
     if not database_loaded:
         global_init("db\\nodes.sqlite3")
         database_loaded = True
-    if not request.json:
-        flask.abort(400)
     try:
         content = request.json
-    except:
+        if not content:
+            flask.abort(400)
+    except TypeError:
         flask.abort(400)
     res = import_items(content)
     if res:
