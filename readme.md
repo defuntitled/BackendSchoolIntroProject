@@ -18,7 +18,7 @@
 	docker-compose up
 
 **Список используемых технологий**
-- Flask для разрвботки логики сервиса
+- Flask для разработки логики сервиса
 - Сервер Gunicorn + Nginx
 - Sqlalchemy + sqlite для хранения данных
 - Docker
