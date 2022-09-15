@@ -59,6 +59,16 @@ def delete_node(id):
     return "200"
 
 
+@app.errorhandler(400)
+def ret_val_err():
+    return bad_answer(400, "Validation Failed")
+
+
+@app.errorhandler(404)
+def ret_val_err():
+    return bad_answer(404, "Item not found")
+
+
 if __name__ == '__main__':
     if not database_loaded:
         global_init("db\\nodes.sqlite3")
