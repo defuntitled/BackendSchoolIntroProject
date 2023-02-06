@@ -1,6 +1,5 @@
 # маленький REST API сервис для вступительного задания в ШБР
 
-![](https://sun9-81.userapi.com/impg/4xuS9-m_1SNYLeytCs9mCtIsSrCT49MxGh9JoQ/SC2X-4z2oc8.jpg?size=1600x1200&quality=95&sign=42de96cf520b21fc26c55295eb279b08&type=album)
 
 ### Функционал
 
